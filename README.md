@@ -79,7 +79,7 @@ steps for creating our PDM are:
 
 1. We add the value of interest to the 12 bits accumulator
 2. Then we see if such accumulator has overflown
-3. Output the overflow condition (also known as carr flag)
+3. Output the overflow condition (also known as carry flag)
 4. Repeat step 1 for a total amout of 2^12 times.
 
 ### The linear Interpolation
