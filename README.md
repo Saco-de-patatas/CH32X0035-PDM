@@ -9,9 +9,14 @@ of the processing time of the main core is spend blinking an LED.
 ## Description
 
 Pulse Density Modulation (PDM) has some advantages over Pulse Width Modulation (PWM) because it shifts the unwanted
-frequency components to the high spectrum, making it very easy the removal of such frequencies. Since decades, 
+frequency components to the high spectrum, making the removal of such frequencies very easy. Since decades, 
 microcontrollers have had the capability of generating PWM signals leveraging the several timer peripherals that are
-commonly available. Generating PWM is a simple matter. 
+commonly available. Generating PWM is a simple matter, just count from 0 to the full range, creating N time slots or
+clock pulses, then for every slot, if the counter is below a reference value, then the device outputs a certain 
+logic level, while the time slots where the counter is above (or equal) such reference, then the device output the 
+respective negated logic level.
+
+[PWM](Pictures/PDM.png)
 
 ## Getting Started
 
