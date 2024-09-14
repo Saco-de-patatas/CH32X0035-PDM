@@ -89,10 +89,35 @@ Until now, we are sampling with fixed values every fixed sample period. Then we 
 ![No interpolation](Pictures/No%20Interp.png)
 
 One of the advantages in PDM is that we have full control of every time slot, and every sample period is comprised of 2^12 time slots.
-We can make the "input" parameter dependent of the n'th slot in sequence, that is, input(n). The simplest yet powerfull manner of
+We can make the "input" parameter dependent of the n'th slot in sequence, that is, I(n). The simplest yet powerfull manner of
 achieving this is just connecting every two samples with a stright line, hence the name of "Linear interpolation".
 
 ![No interpolation](Pictures/Linear%20Interp.png)
+
+
+If we have two samples, Sample[0] and Sample[1], and we have 2^12 steps, that is, 4096 time slots, then we can trace an stright line by simply using the explicit equatinon of a line:
+
+I(n)=Sample[0]+n*(Sample[1]-Sample[0])/4096. 
+
+After 4096 steps, we have that I(4096) = Sample[0] + Sample[1] - Sample[0] = Sample[1].
+
+There is a division that leads to noninteger values, but we can get rid of such division by scaling everything by 4096
+The final equation is I(n) * 4096 = Sample[0] * 4096 + n * (Sample[1] - Sample [0]). The 4096 factor is achieved by shifting 12 bit in the accumulator, 
+that is, treating the I(n) and Accumulator as 24 bits registers, and getting out the 24th bit carry instead of the 12 bit one.
+
+That's all, we've got a linear interpolated 12 bit resolution PDM DAC.
+
+### Results...
+
+Here are some pictures of this demo. Both outputs, PDM and PWM use the same low pass filtering comprised of a 6800 ohm resistor and a 470nF capacitor.
+
+The setup:
+
+![The setup](Pictures/MCU_Shot.jpg)
+
+Both generated sine waves displayed in my oscilloscope.
+
+![General view of the generated waves](Pictures/1726301496000.jpg)
 
 
 ## Getting Started
