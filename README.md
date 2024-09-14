@@ -16,7 +16,8 @@ clock pulses, then for every slot, if the counter is below a reference value, th
 logic level, while the time slots where the counter is above (or equal) such reference, then the device output the 
 respective negated logic level.
 
-![PWM](Pictures/PDM.png)
+![PWM](Pictures/PWM.png)
+
 
 The equivalent analog level is rebuilt by using an integrator, but it can be done as simple as a passive low pass filter
 consisting in a RC network. Thus, the result is an analog level that represents the DC average level at the pulse and is
@@ -28,7 +29,28 @@ equivalent analog signial. Hence if we distribute evenly those Ton slots by inte
 use the same integrator filter but you get some advantages... Because the input signal is more frequently changing, the
 filter can effectively remove out those changes more easily, yielding to a better output analog signal or the need of a
 much lesser complex filtering (this is important when amplyfing in power the pulsed signal because we are dealing with
-very low impedances, so the integrator filters must be done with huge inductances and capacitances...
+very low impedances, so the integrator filters must be done with huge inductances and capacitances... Here is where PDM
+comes into play.
+
+![PWM](Pictures/PDM.png)
+
+PDM is often used in Sigma-Delta modulators that are often used as Analog to Digital Converters, in these, a comparator that
+serves as 1-bit ADC creates a clocked signal that, once integrated into an analog reference and substracted (delta), generates
+an error signal for the next comparation. Then the 1 bit stream is used for a Capture Channel in order to count the number
+of pulses in a certain period, decimating a 1 bit high frequency signal into a lower bitrate but more with more bit-depth.
+
+Inexplicably, although PDM ADCs using counters are trivial for a MCU, DACs using PDM aren't as frequently implemented via 
+hardware inside a MCU due to the lack of simple peripherals that yield to a high rate bitstream, because of that, programmers 
+must rely to the less efficient PWM technique.  
+
+[Delta Sigma Modulation at Wikipedia](https://en.wikipedia.org/wiki/Delta-sigma_modulation)
+
+Here I leverage the capability of the PIOC preripheral in a CH32X035 by creating a moderate high frequency bitstream of 1.371MHz
+that can be utilized to create a 12 bit signal of a relatively yet useful low sample rate.
+
+Of course, because de PDM algorythm is so simple (comprised of just adders-substractors and shadow registers), if such device
+could be implemented via hardware, then the bit stream generated would be clocked at 1 cycle of the main processor. Here in this
+code, the PDM is clocked every mcu 35 cycles. because 
 
 ## Getting Started
 
