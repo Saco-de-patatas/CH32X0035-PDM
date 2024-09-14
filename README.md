@@ -95,7 +95,7 @@ achieving this is just connecting every two samples with a stright line, hence t
 ![No interpolation](Pictures/Linear%20Interp.png)
 
 
-If we have two samples, Sample[0] and Sample[1], and we have 2^12 steps, that is, 4096 time slots, then we can trace an stright line by simply using the explicit equatinon of a line:
+If we have two samples, Sample[0] and Sample[1], and we have 2^12 steps, that is, 4096 time slots, then we can trace a stright line by simply using the explicit equatinon of a line:
 
 I(n)=Sample[0]+n*(Sample[1]-Sample[0])/4096. 
 
