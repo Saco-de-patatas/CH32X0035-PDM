@@ -46,11 +46,18 @@ must rely to the less efficient PWM technique.
 [Delta Sigma Modulation at Wikipedia](https://en.wikipedia.org/wiki/Delta-sigma_modulation)
 
 Here I leverage the capability of the PIOC preripheral in a CH32X035 by creating a moderate high frequency bitstream of 1.371MHz
-that can be utilized to create a 12 bit signal of a relatively yet useful low sample rate.
+(48/35) that can be utilized to create a 12 bit signal of a relatively yet useful low sample rate.
 
 Of course, because de PDM algorythm is so simple (comprised of just adders-substractors and shadow registers), if such device
 could be implemented via hardware, then the bit stream generated would be clocked at 1 cycle of the main processor. Here in this
-code, the PDM is clocked every mcu 35 cycles. because 
+code, the PDM is clocked out every 35 mcu cycles. The master clock in the CH32X035 is of 48Mhz.
+
+### The PDM algorythm
+
+The PDM algorythm is very easy to understand. I will leave the demonstration to the reader, but it consists of this pseudocode...
+...
+hello
+...
 
 ## Getting Started
 
