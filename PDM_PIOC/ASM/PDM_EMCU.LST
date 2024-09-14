@@ -1,0 +1,453 @@
+MCU CH53X ASSEMBLER:  WASM53B Ver 3.1
+Copyright (C) wch.cn 1998-2021, B211121
+Website:   http://wch.cn
+
+List file: PDM_EMCU.LST
+Date: 2024.09.13  Time: 12:51:13
+
+Pass1 -------------------------------------------------------------------------
+LINE ,  PC ,  CODE/DATA: SOURCE
+INCLUDE    PIOC_INC.ASM
+## return from nesting file
+
+Pass2 -------------------------------------------------------------------------
+LINE ,  PC ,  CODE/DATA: SOURCE
+L=0001, NEST_INCLUDE=1 : INCLUDE				PIOC_INC.ASM
+L=0001, ......, D=0000 : ; include file for PIOC/eMCU, V1.0
+L=0002, ......, D=0000 : ; by W.ch @2022.08
+L=0003, ......, D=0000 : ; http://wch.cn  http://winchiphead.com
+L=0004, ......, D=0000 : ;
+L=0005, ......, D=0000 : 
+L=0006, ......, D=0000 : ; define SFR register
+L=0007, ......, D=0000 : SFR_INDIR_PORT      EQU   0x00
+L=0008, ......, D=0001 : SFR_INDIR_PORT2     EQU   0x01
+L=0009, ......, D=0002 : SFR_PRG_COUNT       EQU   0x02
+L=0010, ......, D=0003 : SFR_STATUS_REG      EQU   0x03
+L=0011, ......, D=0004 : SFR_INDIR_ADDR      EQU   0x04
+L=0012, ......, D=0005 : SFR_TMR0_COUNT      EQU   0x05
+L=0013, ......, D=0006 : SFR_TIMER_CTRL      EQU   0x06
+L=0014, ......, D=0007 : SFR_TMR0_INIT       EQU   0x07
+L=0015, ......, D=0008 : SFR_BIT_CYCLE       EQU   0x08
+L=0016, ......, D=0009 : SFR_INDIR_ADDR2     EQU   0x09
+L=0017, ......, D=000A : SFR_PORT_DIR        EQU   0x0A
+L=0018, ......, D=000B : SFR_PORT_IO         EQU   0x0B
+L=0019, ......, D=000C : SFR_BIT_CONFIG      EQU   0x0C
+L=0020, ......, D=001C : SFR_SYS_CFG         EQU   0x1C
+L=0021, ......, D=001D : SFR_CTRL_RD         EQU   0x1D
+L=0022, ......, D=001E : SFR_CTRL_WR         EQU   0x1E
+L=0023, ......, D=001F : SFR_DATA_EXCH       EQU   0x1F
+L=0024, ......, D=0020 : SFR_DATA_REG0       EQU   0x20
+L=0025, ......, D=0021 : SFR_DATA_REG1       EQU   0x21
+L=0026, ......, D=0022 : SFR_DATA_REG2       EQU   0x22
+L=0027, ......, D=0023 : SFR_DATA_REG3       EQU   0x23
+L=0028, ......, D=0024 : SFR_DATA_REG4       EQU   0x24
+L=0029, ......, D=0025 : SFR_DATA_REG5       EQU   0x25
+L=0030, ......, D=0026 : SFR_DATA_REG6       EQU   0x26
+L=0031, ......, D=0027 : SFR_DATA_REG7       EQU   0x27
+L=0032, ......, D=0028 : SFR_DATA_REG8       EQU   0x28
+L=0033, ......, D=0029 : SFR_DATA_REG9       EQU   0x29
+L=0034, ......, D=002A : SFR_DATA_REG10      EQU   0x2A
+L=0035, ......, D=002B : SFR_DATA_REG11      EQU   0x2B
+L=0036, ......, D=002C : SFR_DATA_REG12      EQU   0x2C
+L=0037, ......, D=002D : SFR_DATA_REG13      EQU   0x2D
+L=0038, ......, D=002E : SFR_DATA_REG14      EQU   0x2E
+L=0039, ......, D=002F : SFR_DATA_REG15      EQU   0x2F
+L=0040, ......, D=0030 : SFR_DATA_REG16      EQU   0x30
+L=0041, ......, D=0031 : SFR_DATA_REG17      EQU   0x31
+L=0042, ......, D=0032 : SFR_DATA_REG18      EQU   0x32
+L=0043, ......, D=0033 : SFR_DATA_REG19      EQU   0x33
+L=0044, ......, D=0034 : SFR_DATA_REG20      EQU   0x34
+L=0045, ......, D=0035 : SFR_DATA_REG21      EQU   0x35
+L=0046, ......, D=0036 : SFR_DATA_REG22      EQU   0x36
+L=0047, ......, D=0037 : SFR_DATA_REG23      EQU   0x37
+L=0048, ......, D=0038 : SFR_DATA_REG24      EQU   0x38
+L=0049, ......, D=0039 : SFR_DATA_REG25      EQU   0x39
+L=0050, ......, D=003A : SFR_DATA_REG26      EQU   0x3A
+L=0051, ......, D=003B : SFR_DATA_REG27      EQU   0x3B
+L=0052, ......, D=003C : SFR_DATA_REG28      EQU   0x3C
+L=0053, ......, D=003D : SFR_DATA_REG29      EQU   0x3D
+L=0054, ......, D=003E : SFR_DATA_REG30      EQU   0x3E
+L=0055, ......, D=003F : SFR_DATA_REG31      EQU   0x3F
+L=0056, ......, D=0000 : 
+L=0057, ......, D=0000 : ; define bit for SFR_STATUS_REG
+L=0058, ......, D=0005 : SB_EN_TOUT_RST      EQU   5
+L=0059, ......, D=0004 : SB_STACK_USED       EQU   4
+L=0060, ......, D=0003 : SB_GP_BIT_Y         EQU   3
+L=0061, ......, D=0002 : SB_FLAG_Z           EQU   2
+L=0062, ......, D=0001 : SB_GP_BIT_X         EQU   1
+L=0063, ......, D=0000 : SB_FLAG_C           EQU   0
+L=0064, ......, D=0000 : 
+L=0065, ......, D=0000 : ; define bit for SFR_TIMER_CTRL
+L=0066, ......, D=0007 : SB_EN_LEVEL1        EQU   7
+L=0067, ......, D=0006 : SB_EN_LEVEL0        EQU   6
+L=0068, ......, D=0005 : SB_TMR0_ENABLE      EQU   5
+L=0069, ......, D=0004 : SB_TMR0_OUT_EN      EQU   4
+L=0070, ......, D=0003 : SB_TMR0_MODE        EQU   3
+L=0071, ......, D=0002 : SB_TMR0_FREQ2       EQU   2
+L=0072, ......, D=0001 : SB_TMR0_FREQ1       EQU   1
+L=0073, ......, D=0000 : SB_TMR0_FREQ0       EQU   0
+L=0074, ......, D=0000 : 
+L=0075, ......, D=0000 : ; define bit for SFR_BIT_CYCLE
+L=0076, ......, D=0007 : SB_BIT_TX_O0        EQU   7
+L=0077, ......, D=0006 : SB_BIT_CYCLE_6      EQU   6
+L=0078, ......, D=0005 : SB_BIT_CYCLE_5      EQU   5
+L=0079, ......, D=0004 : SB_BIT_CYCLE_4      EQU   4
+L=0080, ......, D=0003 : SB_BIT_CYCLE_3      EQU   3
+L=0081, ......, D=0002 : SB_BIT_CYCLE_2      EQU   2
+L=0082, ......, D=0001 : SB_BIT_CYCLE_1      EQU   1
+L=0083, ......, D=0000 : SB_BIT_CYCLE_0      EQU   0
+L=0084, ......, D=0000 : 
+L=0085, ......, D=0000 : ; define bit for SFR_PORT_DIR
+L=0086, ......, D=0007 : SB_PORT_MOD3        EQU   7
+L=0087, ......, D=0006 : SB_PORT_MOD2        EQU   6
+L=0088, ......, D=0005 : SB_PORT_MOD1        EQU   5
+L=0089, ......, D=0004 : SB_PORT_MOD0        EQU   4
+L=0090, ......, D=0003 : SB_PORT_PU1         EQU   3
+L=0091, ......, D=0002 : SB_PORT_PU0         EQU   2
+L=0092, ......, D=0001 : SB_PORT_DIR1        EQU   1
+L=0093, ......, D=0000 : SB_PORT_DIR0        EQU   0
+L=0094, ......, D=0000 : 
+L=0095, ......, D=0000 : ; define bit for SFR_PORT_IO
+L=0096, ......, D=0007 : SB_PORT_IN_XOR      EQU   7
+L=0097, ......, D=0006 : SB_BIT_RX_I0        EQU   6
+L=0098, ......, D=0005 : SB_PORT_IN1         EQU   5
+L=0099, ......, D=0004 : SB_PORT_IN0         EQU   4
+L=0100, ......, D=0003 : SB_PORT_XOR1        EQU   3
+L=0101, ......, D=0002 : SB_PORT_XOR0        EQU   2
+L=0102, ......, D=0001 : SB_PORT_OUT1        EQU   1
+L=0103, ......, D=0000 : SB_PORT_OUT0        EQU   0
+L=0104, ......, D=0000 : 
+L=0105, ......, D=0000 : ; define bit for SFR_BIT_CONFIG
+L=0106, ......, D=0007 : SB_BIT_TX_EN        EQU   7
+L=0107, ......, D=0006 : SB_BIT_CODE_MOD     EQU   6
+L=0108, ......, D=0005 : SB_PORT_IN_EDGE     EQU   5
+L=0109, ......, D=0004 : SB_BIT_CYC_TAIL     EQU   4
+L=0110, ......, D=0003 : SB_BIT_CYC_CNT6     EQU   3
+L=0111, ......, D=0002 : SB_BIT_CYC_CNT5     EQU   2
+L=0112, ......, D=0001 : SB_BIT_CYC_CNT4     EQU   1
+L=0113, ......, D=0000 : SB_BIT_CYC_CNT3     EQU   0
+L=0114, ......, D=0000 : 
+L=0115, ......, D=0000 : ; define bit for SFR_SYS_CFG
+L=0116, ......, D=0007 : SB_INT_REQ          EQU   7
+L=0117, ......, D=0006 : SB_DATA_SW_MR       EQU   6
+L=0118, ......, D=0005 : SB_DATA_MW_SR       EQU   5
+L=0119, ......, D=0004 : SB_MST_CFG_B4       EQU   4
+L=0120, ......, D=0003 : SB_MST_IO_EN1       EQU   3
+L=0121, ......, D=0002 : SB_MST_IO_EN0       EQU   2
+L=0122, ......, D=0001 : SB_MST_RESET        EQU   1
+L=0123, ......, D=0000 : SB_MST_CLK_GATE     EQU   0
+L=0124, ......, D=0000 : 
+L=0125, ......, D=0000 : ; define inform for BCTC instruction
+L=0126, ......, D=0000 : BI_C_XOR_IN0        EQU   0
+L=0127, ......, D=0000 : 
+L=0128, ......, D=0000 : ; define inform for BP1F/BP2F/BG1F/BG2F instruction
+L=0129, ......, D=0000 : BIO_FLAG_C          EQU   0
+L=0130, ......, D=0000 : 
+L=0131, ......, D=0000 : ; define inform for BCTC/BG1F/BG2F instruction
+L=0132, ......, D=0001 : BI_BIT_RX_I0        EQU   1
+L=0133, ......, D=0002 : BI_PORT_IN0         EQU   2
+L=0134, ......, D=0003 : BI_PORT_IN1         EQU   3
+L=0135, ......, D=0000 : 
+L=0136, ......, D=0000 : ; define inform for BP1F/BP2F instruction
+L=0137, ......, D=0001 : BO_BIT_TX_O0        EQU   1
+L=0138, ......, D=0002 : BO_PORT_OUT0        EQU   2
+L=0139, ......, D=0003 : BO_PORT_OUT1        EQU   3
+L=0140, ......, D=0000 : 
+L=0141, ......, D=0000 : ; define inform for WAITB instruction
+L=0142, ......, D=0000 : WB_DATA_SW_MR_0     EQU   0
+L=0143, ......, D=0001 : WB_BIT_CYC_TAIL_1   EQU   1
+L=0144, ......, D=0002 : WB_PORT_I0_FALL     EQU   2
+L=0145, ......, D=0003 : WB_PORT_I0_RISE     EQU   3
+L=0146, ......, D=0004 : WB_DATA_MW_SR_1     EQU   4
+L=0147, ......, D=0005 : WB_PORT_XOR1_1      EQU   5
+L=0148, ......, D=0006 : WB_PORT_XOR0_0      EQU   6
+L=0149, ......, D=0007 : WB_PORT_XOR0_1      EQU   7
+## return from nesting file
+L=0002, ......, D=0000 : 
+L=0003, ......, D=001D : DATA_SWITCHER	equ SFR_CTRL_RD
+L=0004, ......, D=0000 : 
+L=0005, ......, D=0020 : DATA0_DELTA_L	equ SFR_DATA_REG0
+L=0006, ......, D=0021 : DATA0_DELTA_M	equ	SFR_DATA_REG1
+L=0007, ......, D=0022 : DATA0_DELTA_H	equ SFR_DATA_REG2
+L=0008, ......, D=0000 : 
+L=0009, ......, D=0024 : DATA1_DELTA_L	equ SFR_DATA_REG4
+L=0010, ......, D=0025 : DATA1_DELTA_M	equ SFR_DATA_REG5
+L=0011, ......, D=0026 : DATA1_DELTA_H	equ SFR_DATA_REG6
+L=0012, ......, D=0000 : 
+L=0013, ......, D=0028 : ACC_SIGMA_L		equ SFR_DATA_REG8
+L=0014, ......, D=0029 : ACC_SIGMA_M		equ SFR_DATA_REG9
+L=0015, ......, D=002A : ACC_SIGMA_H		equ SFR_DATA_REG10
+L=0016, ......, D=0000 : 
+L=0017, ......, D=002C : ACC_ROLLER_L	equ SFR_DATA_REG12
+L=0018, ......, D=002D : ACC_ROLLER_M	equ	SFR_DATA_REG13
+L=0019, ......, D=002E : ACC_ROLLER_H	equ SFR_DATA_REG14
+L=0020, ......, D=0000 : 
+L=0021, ......, D=0030 : STEP_COUNT_L	equ	SFR_DATA_REG16
+L=0022, ......, D=0031 : STEP_COUNT_H	equ SFR_DATA_REG17
+L=0023, ......, D=0000 : 
+L=0024, P=0000, ...... : 				org 0x0000
+L=0025, P=0000, C=0000 : 				DW 0x0000
+L=0026, P=0001, C=6003 : 				jmp Init
+L=0027, P=0002, C=0FFF : 				DW    0X0FFF
+L=0028, ......, D=0000 : 				
+L=0029, P=0003, ...... : Init:
+L=0030, P=0003, C=011D : 		clr 	DATA_SWITCHER
+L=0031, P=0004, C=0120 : 		clr		DATA0_DELTA_L
+L=0032, P=0005, C=0121 : 		clr		DATA0_DELTA_M
+L=0033, P=0006, C=0122 : 		clr		DATA0_DELTA_H
+L=0034, P=0007, C=0124 : 		clr		DATA1_DELTA_L
+L=0035, P=0008, C=0125 : 		clr		DATA1_DELTA_M
+L=0036, P=0009, C=0126 : 		clr		DATA1_DELTA_H
+L=0037, P=000A, C=0128 : 		clr		ACC_SIGMA_L	
+L=0038, P=000B, C=0129 : 		clr		ACC_SIGMA_M	
+L=0039, P=000C, C=012A : 		clr		ACC_SIGMA_H
+L=0040, P=000D, C=0130 : 		clr		STEP_COUNT_L
+L=0041, P=000E, C=0131 : 		clr		STEP_COUNT_H
+L=0042, P=000F, C=2301 : 		mova1f	0B00000001				; Set SFR_PORT_DIR -> SB_PORT_DIR0 as Output, IO0 PULL-UP disabled(i guess that means push-pull enabled).
+L=0043, P=0010, C=4F1C : 		bs		SFR_SYS_CFG, SB_INT_REQ	; Request an interrupt to host for DATA1 Update.
+L=0044, ......, D=0000 : 
+L=0045, P=0011, ...... : LOOP_DATA0:
+L=0046, P=0011, C=0000 : 		NOP
+L=0047, P=0012, C=0000 : 		NOP
+L=0048, P=0013, C=0000 : 		NOP
+L=0049, P=0014, C=0000 : 		NOP
+L=0050, P=0015, C=0000 : 		NOP
+L=0051, P=0016, C=0000 : 		NOP
+L=0052, P=0017, C=0000 : 		NOP
+L=0053, P=0018, ...... : ENTER_DATA0:
+L=0054, P=0018, C=0220 : 		mov		DATA0_DELTA_L, A		;Add DATA0_DELTA TO ACC_SIGMA in 10 cycles.
+L=0055, P=0019, C=1C28 : 		add		ACC_SIGMA_L, F
+L=0056, P=001A, C=0221 : 		mov		DATA0_DELTA_M, A
+L=0057, P=001B, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0058, P=001C, C=0621 : 		incsz	DATA0_DELTA_M, A
+L=0059, P=001D, C=1C29 : 		add		ACC_SIGMA_M, F
+L=0060, P=001E, C=0222 : 		mov		DATA0_DELTA_H, A
+L=0061, P=001F, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0062, P=0020, C=0622 : 		incsz	DATA0_DELTA_H, A
+L=0063, P=0021, C=1C2A : 		add		ACC_SIGMA_H, F
+L=0064, ......, D=0000 : 		
+L=0065, P=0022, C=0228 : 		mov 	ACC_SIGMA_L, A			;Add ACC_SIGMA to ACC_ROLLER in 10 cycles.
+L=0066, P=0023, C=1C2C : 		add  	ACC_ROLLER_L, F	
+L=0067, P=0024, C=0229 : 		mov 	ACC_SIGMA_M, A
+L=0068, P=0025, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0069, P=0026, C=0629 : 		incsz	ACC_SIGMA_M, A	
+L=0070, P=0027, C=1C2D : 		add  	ACC_ROLLER_M, F
+L=0071, P=0028, C=022A : 		mov		ACC_SIGMA_H, A
+L=0072, P=0029, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0073, P=002A, C=062A : 		incsz 	ACC_SIGMA_H, A
+L=0074, P=002B, C=1C2E : 		add  	ACC_ROLLER_H, F			; Here Carry holds the output bit (bit 24 of the roller).
+L=0075, ......, D=0000 : 
+L=0076, ......, D=0000 : 										; Copying C to the output, 2 cycles.
+L=0077, P=002C, C=00E0 : 		bg2f	BIO_FLAG_C, 0			; Put C to somewhere;
+L=0078, P=002D, C=00B0 : 		bp2f	BO_PORT_OUT0, 0			; Get C from somewere and put it to OUT0.
+L=0079, ......, D=0000 : 
+L=0080, P=002E, C=1630 : 		incsz	STEP_COUNT_L, F			; Increment 12 bits step counter, 3 cycles
+L=0081, P=002F, C=1531 : 		dec		STEP_COUNT_H, F
+L=0082, P=0030, C=1431 : 		inc		STEP_COUNT_H, F		
+L=0083, ......, D=0000 : 
+L=0084, P=0031, C=5C31 : 		btss	STEP_COUNT_H, 4			; Test if STEP_COUNT(12) is high, then goto next step.
+L=0085, P=0032, C=6011 : 		jmp		LOOP_DATA0				; 3 cycles
+L=0086, P=0033, C=4431 : 		bc		STEP_COUNT_H, 4			; Reset counter
+L=0087, P=0034, C=0120 : 		clr		DATA0_DELTA_L			; Clear DATA0_DELTA to prevent duplicate run.
+L=0088, P=0035, C=0121 : 		clr		DATA0_DELTA_M
+L=0089, P=0036, C=0122 : 		clr		DATA0_DELTA_H
+L=0090, P=0037, C=481D : 		bs		DATA_SWITCHER, 0		; Indicate next processing of DATA1.
+L=0091, P=0038, C=4F1C : 		bs		SFR_SYS_CFG, SB_INT_REQ	; Request an interrupt to host for DATA0 Update.
+L=0092, P=0039, C=6041 : 		jmp	ENTER_DATA1
+L=0093, ......, D=0000 : 
+L=0094, P=003A, ...... : LOOP_DATA1:
+L=0095, P=003A, C=0000 : 		NOP
+L=0096, P=003B, C=0000 : 		NOP
+L=0097, P=003C, C=0000 : 		NOP
+L=0098, P=003D, C=0000 : 		NOP
+L=0099, P=003E, C=0000 : 		NOP
+L=0100, P=003F, C=0000 : 		NOP	
+L=0101, P=0040, C=0000 : 		NOP
+L=0102, P=0041, ...... : ENTER_DATA1:
+L=0103, P=0041, C=0224 : 		mov 	DATA1_DELTA_L, A		;Add DATA1_DELTA TO ACC_SIGMA in 10 cycles.
+L=0104, P=0042, C=1C28 : 		add  	ACC_SIGMA_L, F
+L=0105, P=0043, C=0225 : 		mov 	DATA1_DELTA_M, A
+L=0106, P=0044, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0107, P=0045, C=0625 : 		incsz	DATA1_DELTA_M, A
+L=0108, P=0046, C=1C29 : 		add  	ACC_SIGMA_M, F
+L=0109, P=0047, C=0226 : 		mov 	DATA1_DELTA_H, A
+L=0110, P=0048, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0111, P=0049, C=0626 : 		incsz	DATA1_DELTA_H, A
+L=0112, P=004A, C=1C2A : 		add  	ACC_SIGMA_H, F
+L=0113, ......, D=0000 : 		
+L=0114, P=004B, C=0228 : 		mov 	ACC_SIGMA_L, A			;Add ACC_SIGMA to ACC_ROLLER in 10 cycles.
+L=0115, P=004C, C=1C2C : 		add  	ACC_ROLLER_L, F	
+L=0116, P=004D, C=0229 : 		mov 	ACC_SIGMA_M, A
+L=0117, P=004E, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0118, P=004F, C=0629 : 		incsz	ACC_SIGMA_M, A	
+L=0119, P=0050, C=1C2D : 		add  	ACC_ROLLER_M, F
+L=0120, P=0051, C=022A : 		mov 	ACC_SIGMA_H, A
+L=0121, P=0052, C=5003 : 		btsc	SFR_STATUS_REG, SB_FLAG_C
+L=0122, P=0053, C=062A : 		incsz 	ACC_SIGMA_H, A
+L=0123, P=0054, C=1C2E : 		add  	ACC_ROLLER_H, F 		; Here Carry holds the output bit (bit 24 of the roller).
+L=0124, ......, D=0000 : 
+L=0125, ......, D=0000 : 										; Copying C to the output, 2 cycles.
+L=0126, P=0055, C=00E0 : 		bg2f	BIO_FLAG_C, 0			; Put C to somewhere;
+L=0127, P=0056, C=00B0 : 		bp2f	BO_PORT_OUT0, 0			; Get C from somewere and put it to OUT0.
+L=0128, ......, D=0000 : 
+L=0129, P=0057, C=1630 : 		incsz	STEP_COUNT_L, F			; Increment 12 bits step counter, 3 cycles
+L=0130, P=0058, C=1531 : 		dec 	STEP_COUNT_H, F
+L=0131, P=0059, C=1431 : 		inc 	STEP_COUNT_H, F		
+L=0132, ......, D=0000 : 
+L=0133, P=005A, C=5C31 : 		btss	STEP_COUNT_H, 4			; Test if STEP_COUNT(12) is high, then goto next step.
+L=0134, P=005B, C=603A : 		jmp 	LOOP_DATA1				; 3 cycles
+L=0135, P=005C, C=4431 : 		bc 		STEP_COUNT_H, 4			; Reset counter
+L=0136, P=005D, C=0124 : 		clr 	DATA1_DELTA_L			; Clear DATA0_DELTA to prevent duplicate run.
+L=0137, P=005E, C=0125 : 		clr 	DATA1_DELTA_M
+L=0138, P=005F, C=0126 : 		clr 	DATA1_DELTA_H
+L=0139, P=0060, C=401D : 		bc 		DATA_SWITCHER, 0		; Indicate next processing of DATA0.
+L=0140, P=0061, C=4F1C : 		bs 		SFR_SYS_CFG, SB_INT_REQ	; Request an interrupt to host for DATA1 Update.
+L=0141, P=0062, C=6018 : 		jmp 	ENTER_DATA0
+L=0142, ......, D=0000 : 
+L=0143, ......, D=0000 : 		
+L=0144, P=0063, .END.. : 	end
+
+Label = 139 -------------------------------------------------------------------
+......name....................value.....type....
+.. ACC_ROLLER_H                .. 002E .. normal
+.. ACC_ROLLER_L                .. 002C .. normal
+.. ACC_ROLLER_M                .. 002D .. normal
+.. ACC_SIGMA_H                 .. 002A .. normal
+.. ACC_SIGMA_L                 .. 0028 .. normal
+.. ACC_SIGMA_M                 .. 0029 .. normal
+.. BIO_FLAG_C                  .. 0000 .. normal
+.. BI_BIT_RX_I0                .. 0001 .. unused
+.. BI_C_XOR_IN0                .. 0000 .. unused
+.. BI_PORT_IN0                 .. 0002 .. unused
+.. BI_PORT_IN1                 .. 0003 .. unused
+.. BO_BIT_TX_O0                .. 0001 .. unused
+.. BO_PORT_OUT0                .. 0002 .. normal
+.. BO_PORT_OUT1                .. 0003 .. unused
+.. DATA0_DELTA_H               .. 0022 .. normal
+.. DATA0_DELTA_L               .. 0020 .. normal
+.. DATA0_DELTA_M               .. 0021 .. normal
+.. DATA1_DELTA_H               .. 0026 .. normal
+.. DATA1_DELTA_L               .. 0024 .. normal
+.. DATA1_DELTA_M               .. 0025 .. normal
+.. DATA_SWITCHER               .. 001D .. normal
+.. ENTER_DATA0                 .. 0018 .. normal
+.. ENTER_DATA1                 .. 0041 .. normal
+.. INIT                        .. 0003 .. normal
+.. LOOP_DATA0                  .. 0011 .. normal
+.. LOOP_DATA1                  .. 003A .. normal
+.. SB_BIT_CODE_MOD             .. 0006 .. unused
+.. SB_BIT_CYCLE_0              .. 0000 .. unused
+.. SB_BIT_CYCLE_1              .. 0001 .. unused
+.. SB_BIT_CYCLE_2              .. 0002 .. unused
+.. SB_BIT_CYCLE_3              .. 0003 .. unused
+.. SB_BIT_CYCLE_4              .. 0004 .. unused
+.. SB_BIT_CYCLE_5              .. 0005 .. unused
+.. SB_BIT_CYCLE_6              .. 0006 .. unused
+.. SB_BIT_CYC_CNT3             .. 0000 .. unused
+.. SB_BIT_CYC_CNT4             .. 0001 .. unused
+.. SB_BIT_CYC_CNT5             .. 0002 .. unused
+.. SB_BIT_CYC_CNT6             .. 0003 .. unused
+.. SB_BIT_CYC_TAIL             .. 0004 .. unused
+.. SB_BIT_RX_I0                .. 0006 .. unused
+.. SB_BIT_TX_EN                .. 0007 .. unused
+.. SB_BIT_TX_O0                .. 0007 .. unused
+.. SB_DATA_MW_SR               .. 0005 .. unused
+.. SB_DATA_SW_MR               .. 0006 .. unused
+.. SB_EN_LEVEL0                .. 0006 .. unused
+.. SB_EN_LEVEL1                .. 0007 .. unused
+.. SB_EN_TOUT_RST              .. 0005 .. unused
+.. SB_FLAG_C                   .. 0000 .. normal
+.. SB_FLAG_Z                   .. 0002 .. unused
+.. SB_GP_BIT_X                 .. 0001 .. unused
+.. SB_GP_BIT_Y                 .. 0003 .. unused
+.. SB_INT_REQ                  .. 0007 .. normal
+.. SB_MST_CFG_B4               .. 0004 .. unused
+.. SB_MST_CLK_GATE             .. 0000 .. unused
+.. SB_MST_IO_EN0               .. 0002 .. unused
+.. SB_MST_IO_EN1               .. 0003 .. unused
+.. SB_MST_RESET                .. 0001 .. unused
+.. SB_PORT_DIR0                .. 0000 .. unused
+.. SB_PORT_DIR1                .. 0001 .. unused
+.. SB_PORT_IN0                 .. 0004 .. unused
+.. SB_PORT_IN1                 .. 0005 .. unused
+.. SB_PORT_IN_EDGE             .. 0005 .. unused
+.. SB_PORT_IN_XOR              .. 0007 .. unused
+.. SB_PORT_MOD0                .. 0004 .. unused
+.. SB_PORT_MOD1                .. 0005 .. unused
+.. SB_PORT_MOD2                .. 0006 .. unused
+.. SB_PORT_MOD3                .. 0007 .. unused
+.. SB_PORT_OUT0                .. 0000 .. unused
+.. SB_PORT_OUT1                .. 0001 .. unused
+.. SB_PORT_PU0                 .. 0002 .. unused
+.. SB_PORT_PU1                 .. 0003 .. unused
+.. SB_PORT_XOR0                .. 0002 .. unused
+.. SB_PORT_XOR1                .. 0003 .. unused
+.. SB_STACK_USED               .. 0004 .. unused
+.. SB_TMR0_ENABLE              .. 0005 .. unused
+.. SB_TMR0_FREQ0               .. 0000 .. unused
+.. SB_TMR0_FREQ1               .. 0001 .. unused
+.. SB_TMR0_FREQ2               .. 0002 .. unused
+.. SB_TMR0_MODE                .. 0003 .. unused
+.. SB_TMR0_OUT_EN              .. 0004 .. unused
+.. SFR_BIT_CONFIG              .. 000C .. unused
+.. SFR_BIT_CYCLE               .. 0008 .. unused
+.. SFR_CTRL_RD                 .. 001D .. normal
+.. SFR_CTRL_WR                 .. 001E .. unused
+.. SFR_DATA_EXCH               .. 001F .. unused
+.. SFR_DATA_REG0               .. 0020 .. normal
+.. SFR_DATA_REG1               .. 0021 .. normal
+.. SFR_DATA_REG10              .. 002A .. normal
+.. SFR_DATA_REG11              .. 002B .. unused
+.. SFR_DATA_REG12              .. 002C .. normal
+.. SFR_DATA_REG13              .. 002D .. normal
+.. SFR_DATA_REG14              .. 002E .. normal
+.. SFR_DATA_REG15              .. 002F .. unused
+.. SFR_DATA_REG16              .. 0030 .. normal
+.. SFR_DATA_REG17              .. 0031 .. normal
+.. SFR_DATA_REG18              .. 0032 .. unused
+.. SFR_DATA_REG19              .. 0033 .. unused
+.. SFR_DATA_REG2               .. 0022 .. normal
+.. SFR_DATA_REG20              .. 0034 .. unused
+.. SFR_DATA_REG21              .. 0035 .. unused
+.. SFR_DATA_REG22              .. 0036 .. unused
+.. SFR_DATA_REG23              .. 0037 .. unused
+.. SFR_DATA_REG24              .. 0038 .. unused
+.. SFR_DATA_REG25              .. 0039 .. unused
+.. SFR_DATA_REG26              .. 003A .. unused
+.. SFR_DATA_REG27              .. 003B .. unused
+.. SFR_DATA_REG28              .. 003C .. unused
+.. SFR_DATA_REG29              .. 003D .. unused
+.. SFR_DATA_REG3               .. 0023 .. unused
+.. SFR_DATA_REG30              .. 003E .. unused
+.. SFR_DATA_REG31              .. 003F .. unused
+.. SFR_DATA_REG4               .. 0024 .. normal
+.. SFR_DATA_REG5               .. 0025 .. normal
+.. SFR_DATA_REG6               .. 0026 .. normal
+.. SFR_DATA_REG7               .. 0027 .. unused
+.. SFR_DATA_REG8               .. 0028 .. normal
+.. SFR_DATA_REG9               .. 0029 .. normal
+.. SFR_INDIR_ADDR              .. 0004 .. unused
+.. SFR_INDIR_ADDR2             .. 0009 .. unused
+.. SFR_INDIR_PORT              .. 0000 .. unused
+.. SFR_INDIR_PORT2             .. 0001 .. unused
+.. SFR_PORT_DIR                .. 000A .. unused
+.. SFR_PORT_IO                 .. 000B .. unused
+.. SFR_PRG_COUNT               .. 0002 .. unused
+.. SFR_STATUS_REG              .. 0003 .. normal
+.. SFR_SYS_CFG                 .. 001C .. normal
+.. SFR_TIMER_CTRL              .. 0006 .. unused
+.. SFR_TMR0_COUNT              .. 0005 .. unused
+.. SFR_TMR0_INIT               .. 0007 .. unused
+.. STEP_COUNT_H                .. 0031 .. normal
+.. STEP_COUNT_L                .. 0030 .. normal
+.. WB_BIT_CYC_TAIL_1           .. 0001 .. unused
+.. WB_DATA_MW_SR_1             .. 0004 .. unused
+.. WB_DATA_SW_MR_0             .. 0000 .. unused
+.. WB_PORT_I0_FALL             .. 0002 .. unused
+.. WB_PORT_I0_RISE             .. 0003 .. unused
+.. WB_PORT_XOR0_0              .. 0006 .. unused
+.. WB_PORT_XOR0_1              .. 0007 .. unused
+.. WB_PORT_XOR1_1              .. 0005 .. unused
+
+End = 0063H -------------------------------------------------------------------
+Total_Info: 00, Total_Warning: 00, Total_Error: 00
