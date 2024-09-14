@@ -54,10 +54,35 @@ code, the PDM is clocked out every 35 mcu cycles. The master clock in the CH32X0
 
 ### The PDM algorythm
 
-The PDM algorythm is very easy to understand. I will leave the demonstration to the reader, but it consists of this pseudocode...
+The PDM algorythm is very easy to understand. I will leave the demonstration to the reader, but it consists of this C pseudocode...
 ```
-hello
-```
+int i, accumulator=0;
+while(new(input){
+   for (i=0; i<Range; i++){
+                      accumulator = accumulator + input;
+                      if (accumulator>=Range) {
+                                 output(high);
+                                 accumulator = accumulator - Range;
+                       } else output(low);
+   }
+}
+```  
+
+Due to the properties of modulo operator (the substraction shown above is just an easy way to get the remainder of quotient 1), 
+after "Range" times has passed, the state of the accumulator is equal to the initial state (because there is the "Range" modulo of the
+product of any input value by the Range. By the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle), one can 
+demonstrate that the output goes high exactly the same amount of times the value of the input, and those pulses are evenly distributed
+across the full range. That is, we got our PDM ready.
+
+If Range is a power of 2, for example, 2^12, then we can implement the modulo operator by bitmasking, or just resetting the bit outside the range. Then the
+steps for creating our PDM are:
+
+1. We add the value of interest to the 12 bits accumulator
+2. Then we see if such accumulator has overflown
+3. Output the overflow condition (also known as carr flag)
+4. Repeat step 1 a total amout of 2^12 times.
+
+
 
 ## Getting Started
 
