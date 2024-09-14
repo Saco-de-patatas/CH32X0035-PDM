@@ -18,7 +18,7 @@ respective negated logic level.
 
 [PWM](Pictures/PDM.png)
 
-<span>![</span><span>PWM Example</span><span>]</span><span>(</span><span>[https://raw.githubusercontent.com/parzibyte/WaterPy/master/assets/ImagenV1.png](https://github.com/Saco-de-patatas/CH32X0035-PDM/blob/main/Pictures/PDM.png)</span><span>)</span>
+![PWM Example](https://github.com/Saco-de-patatas/CH32X0035-PDM/blob/main/Pictures/PDM.png)
 
 ## Getting Started
 
