@@ -16,9 +16,19 @@ clock pulses, then for every slot, if the counter is below a reference value, th
 logic level, while the time slots where the counter is above (or equal) such reference, then the device output the 
 respective negated logic level.
 
-[PWM](Pictures/PDM.png)
+![PWM](Pictures/PDM.png)
 
-![PWM Example](https://github.com/Saco-de-patatas/CH32X0035-PDM/blob/main/Pictures/PDM.png)
+The equivalent analog level is rebuilt by using an integrator, but it can be done as simple as a passive low pass filter
+consisting in a RC network. Thus, the result is an analog level that represents the DC average level at the pulse and is
+directly proporcional to Ton/(Ton+Toff) also known as Duty Cycle. We remember that every pulse period is divided in N time
+slots. If this N is a power of 2, you get a resolution in bits of Log2(N).
+
+Really, as long as the "Ton" slots are present in a whole pulse, no matter where they are located, you can rebuild the 
+equivalent analog signial. Hence if we distribute evenly those Ton slots by interleaving with the Toff slots, you can 
+use the same integrator filter but you get some advantages... Because the input signal is more frequently changing, the
+filter can effectively remove out those changes more easily, yielding to a better output analog signal or the need of a
+much lesser complex filtering (this is important when amplyfing in power the pulsed signal because we are dealing with
+very low impedances, so the integrator filters must be done with huge inductances and capacitances...
 
 ## Getting Started
 
