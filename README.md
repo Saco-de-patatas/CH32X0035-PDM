@@ -55,9 +55,9 @@ code, the PDM is clocked out every 35 mcu cycles. The master clock in the CH32X0
 ### The PDM algorythm
 
 The PDM algorythm is very easy to understand. I will leave the demonstration to the reader, but it consists of this pseudocode...
-...
+```
 hello
-...
+```
 
 ## Getting Started
 
