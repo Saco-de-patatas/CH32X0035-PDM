@@ -80,8 +80,19 @@ steps for creating our PDM are:
 1. We add the value of interest to the 12 bits accumulator
 2. Then we see if such accumulator has overflown
 3. Output the overflow condition (also known as carr flag)
-4. Repeat step 1 a total amout of 2^12 times.
+4. Repeat step 1 for a total amout of 2^12 times.
 
+### The linear Interpolation
+
+Until now, we are sampling with fixed values every fixed sample period. Then we are creating a stepped analog signal such as this one...
+
+![No interpolation](Pictures/No%20Interp.png)
+
+One of the advantages in PDM is that we have full control of every time slot, and every sample period is comprised of 2^12 time slots.
+We can make the "input" parameter dependent of the n'th slot in sequence, that is, input(n). The simplest yet powerfull manner of
+achieving this is just connecting every two samples with a stright line, hence the name of "Linear interpolation".
+
+![No interpolation](Pictures/Linear%20Interp.png)
 
 
 ## Getting Started
