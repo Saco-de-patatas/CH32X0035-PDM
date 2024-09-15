@@ -105,6 +105,10 @@ There is a division that leads to noninteger values, but we can get rid of such 
 
 I(n) * 4096 = Sample[0] * 4096 + n * (Sample[1] - Sample [0]). 
 
+Of course we can use a very efficient method of calculating the next input value by using the equivalent difference equation such as:
+
+I(n+1) * 4096 = I(n) + (Sample[1]-Sample[0]), I[0] = Sample[0] * 4096
+
 The 4096 factor is achieved by shifting 12 bit in the accumulator, 
 that is, treating the I(n) and Accumulator as 24 bits registers, and getting out the 24th bit carry instead of the 12th bit one. The new input would be the "Delta" increment, or the current sample being substracted by the previous one.
 
