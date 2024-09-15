@@ -45,7 +45,7 @@ must rely to the less efficient PWM technique.
 
 [Delta Sigma Modulation at Wikipedia](https://en.wikipedia.org/wiki/Delta-sigma_modulation)
 
-Here I leverage the capability of the PIOC preripheral in a CH32X035 by creating a moderately high frequency bitstream of 1.371MHz
+Here I leverage the capability of the PIOC peripheral in a CH32X035 by creating a moderately high frequency bitstream of 1.371MHz
 (48/35) that can be utilized to create a 12 bit signal of a relatively yet useful low sample rate.
 
 Of course, because de PDM algorythm is so simple (comprised of just adders-substractors and shadow registers), if such device
