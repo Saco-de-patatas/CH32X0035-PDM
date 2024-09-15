@@ -13,7 +13,7 @@ frequency components to the high spectrum, making the removal of such frequencie
 microcontrollers have had the capability of generating PWM signals leveraging the several timer peripherals that are
 commonly available. Generating PWM is a simple matter, just count from 0 to the full range, creating N time slots or
 clock pulses, then for every slot, if the counter is below a reference value, then the device outputs a certain 
-logic level, while the time slots where the counter is above (or equal) such reference, then the device output the 
+logic level, while the time slots where the counter is above (or equal) such reference, then the device outputs the 
 respective negated logic level.
 
 ![PWM](Pictures/PWM.png)
@@ -22,34 +22,34 @@ respective negated logic level.
 The equivalent analog level is rebuilt by using an integrator, but it can be done as simple as a passive low pass filter
 consisting in a RC network. Thus, the result is an analog level that represents the DC average level at the pulse and is
 directly proporcional to Ton/(Ton+Toff) also known as Duty Cycle. We remember that every pulse period is divided in N time
-slots. If this N is a power of 2, you get a resolution in bits of Log2(N).
+slots. If this N is a power of 2, you get a bit resolution of Log2(N).
 
 Really, as long as the "Ton" slots are present in a whole pulse, no matter where they are located, you can rebuild the 
-equivalent analog signial. Hence if we distribute evenly those Ton slots by interleaving with the Toff slots, you can 
+equivalent analog signal. Hence if we distribute evenly those Ton slots by interleaving with the Toff slots, you can 
 use the same integrator filter but you get some advantages... Because the input signal is more frequently changing, the
-filter can effectively remove out those changes more easily, yielding to a better output analog signal or the need of a
-much lesser complex filtering (this is important when amplyfing in power the pulsed signal because we are dealing with
-very low impedances, so the integrator filters must be done with huge inductances and capacitances... Here is where PDM
+filter can effectively remove out those changes more easily, yielding to a better analog output signal or the need of a
+much lesser complex filtering (this is important when power amplyfing the pulsed signal because we are dealing with
+very low impedances, so the integrator filters must be done with huge inductances and capacitances...) Here is where PDM
 comes into play.
 
 ![PWM](Pictures/PDM.png)
 
-PDM is often used in Sigma-Delta modulators that are often used as Analog to Digital Converters, in these, a comparator that
+PDM is often used in Sigma-Delta modulators that are used as Analog to Digital Converters, in these, a comparator that
 serves as 1-bit ADC creates a clocked signal that, once integrated into an analog reference and substracted (delta), generates
-an error signal for the next comparation. Then the 1 bit stream is used for a Capture Channel in order to count the number
-of pulses in a certain period, decimating a 1 bit high frequency signal into a lower bitrate but more with more bit-depth.
+an error signal for the next comparison. Then the 1 bit stream is used by a Capture Channel in order to count the number
+of pulses for a certain period, decimating a 1-bit high frequency signal into a lower bitrate but having more bit-depth.
 
-Inexplicably, although PDM ADCs using counters are trivial for a MCU, DACs using PDM aren't as frequently implemented via 
+Inexplicably, although PDM ADCs using counters are trivial for a MCU, DACs using PDM aren't as frequently implemented by any
 hardware inside a MCU due to the lack of simple peripherals that yield to a high rate bitstream, because of that, programmers 
 must rely to the less efficient PWM technique.  
 
 [Delta Sigma Modulation at Wikipedia](https://en.wikipedia.org/wiki/Delta-sigma_modulation)
 
-Here I leverage the capability of the PIOC preripheral in a CH32X035 by creating a moderate high frequency bitstream of 1.371MHz
+Here I leverage the capability of the PIOC preripheral in a CH32X035 by creating a moderately high frequency bitstream of 1.371MHz
 (48/35) that can be utilized to create a 12 bit signal of a relatively yet useful low sample rate.
 
 Of course, because de PDM algorythm is so simple (comprised of just adders-substractors and shadow registers), if such device
-could be implemented via hardware, then the bit stream generated would be clocked at 1 cycle of the main processor. Here in this
+could be implemented via hardware, then the bit stream generated would be clocked at every one cycle of the main processor. Here in this
 code, the PDM is clocked out every 35 mcu cycles. The master clock in the CH32X035 is of 48Mhz.
 
 ### The PDM algorythm
@@ -57,7 +57,7 @@ code, the PDM is clocked out every 35 mcu cycles. The master clock in the CH32X0
 The PDM algorythm is very easy to understand. I will leave the demonstration to the reader, but it consists of this C pseudocode...
 ```
 int i, accumulator=0;
-while(new(input){
+while(new(input)){
    for (i=0; i<Range; i++){
                       accumulator = accumulator + input;
                       if (accumulator>=Range) {
@@ -68,13 +68,13 @@ while(new(input){
 }
 ```  
 
-Due to the properties of modulo operator (the substraction shown above is just an easy way to get the remainder of quotient 1), 
+Due to the properties of the modulo operator (the substraction shown above is just an easy way to get the remainder of quotient 1), 
 after "Range" times has passed, the state of the accumulator is equal to the initial state (because there is the "Range" modulo of the
 product of any input value by the Range. By the [Pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle), one can 
-demonstrate that the output goes high exactly the same amount of times the value of the input, and those pulses are evenly distributed
+demonstrate that the output goes to high level exactly the same amount of times the value count of the input, and those pulses are evenly distributed
 across the full range. That is, we got our PDM ready.
 
-If Range is a power of 2, for example, 2^12, then we can implement the modulo operator by bitmasking, or just resetting the bit outside the range. Then the
+If "Range" is a power of 2, for example, 2^12, then we can implement the modulo operator by bitmasking, or just resetting the bit outside the range. Then the
 steps for creating our PDM are:
 
 1. We add the value of interest to the 12 bits accumulator
@@ -84,12 +84,12 @@ steps for creating our PDM are:
 
 ### The linear Interpolation
 
-Until now, we are sampling with fixed values every fixed sample period. Then we are creating a stepped analog signal such as this one...
+Until now, we are sampling with fixed values every fixed sample period. In fact, we are creating a stepped analog signal such as this one...
 
 ![No interpolation](Pictures/No%20Interp.png)
 
 One of the advantages in PDM is that we have full control of every time slot, and every sample period is comprised of 2^12 time slots.
-We can make the "input" parameter dependent of the n'th slot in sequence, that is, I(n). The simplest yet powerfull manner of
+We can make the "input" parameter dependent of the n'th slot in sequence, that is, a function that i'll refer to as I(n). The simplest yet powerfull manner of
 achieving this is just connecting every two samples with a straight line, hence the name of "Linear interpolation".
 
 ![No interpolation](Pictures/Linear%20Interp.png)
@@ -101,9 +101,12 @@ I(n)=Sample[0]+n*(Sample[1]-Sample[0])/4096.
 
 After 4096 steps, we have that I(4096) = Sample[0] + Sample[1] - Sample[0] = Sample[1].
 
-There is a division that leads to noninteger values, but we can get rid of such division by scaling everything by 4096
-The final equation is I(n) * 4096 = Sample[0] * 4096 + n * (Sample[1] - Sample [0]). The 4096 factor is achieved by shifting 12 bit in the accumulator, 
-that is, treating the I(n) and Accumulator as 24 bits registers, and getting out the 24th bit carry instead of the 12 bit one.
+There is a division that leads to noninteger values, but we can get rid of such division by scaling everything by 4096. The eventual equation is
+
+I(n) * 4096 = Sample[0] * 4096 + n * (Sample[1] - Sample [0]). 
+
+The 4096 factor is achieved by shifting 12 bit in the accumulator, 
+that is, treating the I(n) and Accumulator as 24 bits registers, and getting out the 24th bit carry instead of the 12th bit one. The new input would be the "Delta" increment, or the current sample being substracted by the previous one.
 
 That's all, we've got a linear interpolated 12 bit resolution PDM DAC.
 
